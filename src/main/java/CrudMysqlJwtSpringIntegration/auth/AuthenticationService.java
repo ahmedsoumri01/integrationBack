@@ -45,13 +45,23 @@ public class AuthenticationService {
         );
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String jwtToken = jwtService.generateToken(userDetails);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .email(userDetails.getUsername()) // Assuming email is used as the username
-                .username(userDetails.getUsername())
-                .role(getUserRole(userDetails)) // You need to implement getUserRole method
-                .build();
+        Optional<User> optionalUser = repository.findByEmail(userDetails.getUsername());
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            String jwtToken = jwtService.generateToken(userDetails);
+
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .userId(user.getId()) // Include user ID
+                    .email(userDetails.getUsername())
+                    .username(userDetails.getUsername())
+                    .role(user.getRole().name())
+                    .build();
+        } else {
+            // Handle the case where the user is not found
+            throw new UserNotFoundException("User not found");
+        }
     }
 
     // Separate method to create a new user
