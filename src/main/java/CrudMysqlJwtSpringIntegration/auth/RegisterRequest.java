@@ -15,6 +15,17 @@ public class RegisterRequest {
     private String email;
     private String password;
 
+    // Add the getter for email
+    public String getEmail() {
+        return email;
+    }
+
+    // Add the getter for password
+    public String getPassword() {
+        return password;
+    }
+
+    // Add the getter for username
     public String getUsername() {
         return username;
     }
