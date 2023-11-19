@@ -85,4 +85,18 @@ public class AuthenticationService {
 
         return "USER";
     }
+    public void updateUser(Integer userId, UpdateUserRequest updateUserRequest) {
+        // Retrieve the user from the database
+        User existingUser = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        // Update user information based on the request
+        existingUser.setUsername(updateUserRequest.getUsername());
+        existingUser.setEmail(updateUserRequest.getEmail());
+        // Update other fields as needed
+
+        // Save the updated user to the database
+        repository.save(existingUser);
+    }
+
 }
