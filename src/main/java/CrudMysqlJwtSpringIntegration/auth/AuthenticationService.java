@@ -49,11 +49,13 @@ public class AuthenticationService {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            String jwtToken = jwtService.generateToken(userDetails);
+
+            // Generate JWT token with the single role included
+            String jwtToken = jwtService.generateToken(user.getRole().name(), userDetails);
 
             return AuthenticationResponse.builder()
                     .token(jwtToken)
-                    .userId(user.getId()) // Include user ID
+                    .userId(user.getId())
                     .email(userDetails.getUsername())
                     .username(userDetails.getUsername())
                     .role(user.getRole().name())
