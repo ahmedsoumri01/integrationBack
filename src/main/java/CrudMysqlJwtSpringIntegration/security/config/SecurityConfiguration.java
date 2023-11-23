@@ -34,11 +34,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .requestMatchers("/api/v1/auth/admin/**").hasRole("ADMIN") // Restrict access to /api/v1/auth/admin to users with ADMIN role
-                .requestMatchers("/api/v1/auth/**").permitAll() // Allow access to other /api/v1/auth/** endpoints without authentication
-                .anyRequest().authenticated()
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .requestMatchers("/api/v1/auth/**").permitAll();
 
         return http.build();
     }
